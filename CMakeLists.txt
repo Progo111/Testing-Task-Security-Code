@@ -16,12 +16,8 @@ add_executable(DiskInfoUtility
 
 target_include_directories(DiskInfoUtility PRIVATE include)
 
-message(STATUS "Building for architecture: ${TARGET_ARCH}")
-
 target_link_libraries(DiskInfoUtility PRIVATE 
     advapi32  
     netapi32   
     user32     
 )
-
-message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
