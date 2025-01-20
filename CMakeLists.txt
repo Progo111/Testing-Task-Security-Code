@@ -16,15 +16,12 @@ add_executable(DiskInfoUtility
 
 target_include_directories(DiskInfoUtility PRIVATE include)
 
-# Вывод архитектуры во время сборки
 message(STATUS "Building for architecture: ${TARGET_ARCH}")
 
-# Указываем, что программа требует Windows API
 target_link_libraries(DiskInfoUtility PRIVATE 
     advapi32  
     netapi32   
     user32     
 )
 
-# Вывод сообщений о конфигурации сборки
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
