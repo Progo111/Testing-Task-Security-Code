@@ -32,5 +32,10 @@ ProgramOptions ParseArguments(int argc, char* argv[])
             throw std::invalid_argument(UNKNOWN_ARGUMEN_MESSAGE + arg);
         }
     }
+
+    if (options.task == UndefindedTask) {
+        throw std::invalid_argument(TASK_INVALID_ARGUMENT_MESSAGE);
+    }
+    
     return options;
 }

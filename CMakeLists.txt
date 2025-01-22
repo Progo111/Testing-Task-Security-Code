@@ -17,7 +17,6 @@ add_executable(DiskInfoUtility
 target_include_directories(DiskInfoUtility PRIVATE include)
 
 target_link_libraries(DiskInfoUtility PRIVATE 
-    advapi32  
     netapi32   
     user32     
 )

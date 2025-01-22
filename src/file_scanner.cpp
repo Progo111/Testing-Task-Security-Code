@@ -12,7 +12,12 @@ std::string ConvertFileTimeToString(const FILETIME& ft) {
     return std::string(buffer);
 }
 
-ScanDirectory::ScanDirectory(std::weak_ptr<Files> pFiles, bool& enableLogging) : m_pFiles(pFiles), m_enableLogging(enableLogging)
+ScanDirectory::ScanDirectory(std::weak_ptr<Files> pFiles, bool& enableLogging,
+                                size_t* cntFiles, size_t* cntDir) :   m_pFiles(pFiles), 
+                                                                m_enableLogging(enableLogging),
+                                                                m_cntFiles(cntFiles),
+                                                                m_cntDir(cntDir)
+                                                                
 {
 }
 
@@ -41,10 +46,13 @@ void ScanDirectory::Scan(const std::string& path)
 
             std::string creationTime = ConvertFileTimeToString(findFileData.ftCreationTime);
 
-            pSharedFiles->emplace_back(fullPath, creationTime, isDir, 0, 0);
+            pSharedFiles->emplace_back(fullPath, creationTime, isDir);
 
             if (isDir) {
+                ++(*m_cntDir);
                 Scan(fullPath + "\\");
+            } else {
+                ++(*m_cntFiles);
             }
         }  
 

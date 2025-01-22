@@ -25,18 +25,26 @@ void RunTask::FileScannerTaskHandler()
     Disks disks;
     GetDiskInfo(disks);
 
-    std::shared_ptr<Files> fileArray = std::make_shared<Files>();
-    ScanDirectory scanDirectory {fileArray, m_options.enableLogging};
 
     for (auto& disk : disks) {
+        std::shared_ptr<Files> fileArray = std::make_shared<Files>();
+        std::unique_ptr<size_t> cntFiles = std::make_unique<size_t>(0);
+        std::unique_ptr<size_t> cntDir = std::make_unique<size_t>(0);
+        ScanDirectory scanDirectory {fileArray, m_options.enableLogging, cntFiles.get(), cntDir.get()};
+
         scanDirectory.Scan(disk.name);
+
+        m_outFile << "Volume: " << disk.name << std::endl 
+                    << "Count Dirs: " << *cntDir << ", Count Files: " << *cntFiles << std::endl << std::endl;
+
+        for (auto& file : *fileArray) {
+            m_outFile << "FileName: " << file.fileName << ", "
+                    << "IsDir: " << file.isDirectory << ", "
+                    << "CreationTime: " << file.creatTime << std::endl;
+        }
+        m_outFile << std::endl;
     }
 
-    for (auto& file : *fileArray) {
-        m_outFile << "FileName: " << file.fileName << ", "
-                << "IsDir: " << file.isDirectory << ", "
-                << "CreationTime: " << file.creatTime << std::endl;
-    }
 }
 
 void RunTask::UserInformationTaskHandler()
